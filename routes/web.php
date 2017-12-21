@@ -57,6 +57,7 @@ $router->group(['prefix' => 'api' /*, 'middleware' => 'Cors' */], function ($rou
             $router->post('findfilter','ViviendasController@findByFilter');
 
             $router->get('pdf/{id}','ViviendasController@ArchivoPDF');
+            $router->get('img/{id}','ViviendasController@ArchivosImagenes');
     	});
 
         // -----USUARIO------

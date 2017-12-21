@@ -17,7 +17,7 @@ class UsuarioController extends BaseController
 
 			$user = new Usuario();
 
-			$user = Usuario::where('nick',$request->input('username'))
+			$user = Usuario::where('nick', $request->input('username'))
 					->where('pass',$request->input('password'))
 					->first();
 
