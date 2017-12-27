@@ -30,7 +30,7 @@ $router->group(['prefix' => 'api' /*, 'middleware' => 'Cors' */], function ($rou
     	// ------ARCHIVOS--------
 		$router->group(['prefix' => 'archivos'], function($router){
     		$router->get('/','ArchivosController@all');
-    		$router->post('create','ArchivosController@create');
+    		$router->post('create','ArchivosController@crearArchivo');
     		$router->delete('{id}','ArchivosController@delete');
     		$router->put('{id}','ArchivosController@update');
             $router->get('{id}','ArchivosController@find');
@@ -50,14 +50,16 @@ $router->group(['prefix' => 'api' /*, 'middleware' => 'Cors' */], function ($rou
 		// -----VIVIENDAS------
 		$router->group(['prefix' => 'viviendas'], function($router){
     		$router->get('/','ViviendasController@all');
+            $router->get('viviendaFin', 'ViviendasController@getViviendaNoFin');
     		$router->post('create','ViviendasController@create');
     		$router->delete('{id}','ViviendasController@delete');
     		$router->put('{id}','ViviendasController@update');
             $router->get('{id}','ViviendasController@find');
             $router->post('findfilter','ViviendasController@findByFilter');
+            
+            $router->get('pdf/{img}','ViviendasController@ArchivoPDF');
+            $router->get('img/{img}','ViviendasController@ArchivosImagenes');
 
-            $router->get('pdf/{id}','ViviendasController@ArchivoPDF');
-            $router->get('img/{id}','ViviendasController@ArchivosImagenes');
     	});
 
         // -----USUARIO------

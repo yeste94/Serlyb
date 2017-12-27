@@ -60,7 +60,7 @@ class BaseController
 
 
             if( !$request->exists('filter')){
-               print_r($request->exists('filter'));
+               
                 return response(null, 400)
                     ->header('Content-Type', 'application/json')
                     ->header('Access-Control-Allow-Origin', '*')
@@ -131,6 +131,8 @@ class BaseController
                 $registro[$key] = $request->has($key) ? $request->input($key) : null;  
 
             }else{
+
+                
                 foreach ($registro->getFillable() as $key)
                 $registro[$key] = $request->has($key) ? $request->input($key) : null;                
             }
@@ -191,8 +193,7 @@ class BaseController
         $registro = $clase::find($id);
 
         $tablas = $registro->getFillable();
-        print_r($request->input('nick'));
-        print_r($request->has('nick'));
+
 
         foreach ($tablas as $key){
             if($request->has($key)){
@@ -202,24 +203,30 @@ class BaseController
 
         $registro->save();
 
-        return response($registro, 200)
-                ->header('Content-Type', 'application/json')
-                ->header('Access-Control-Allow-Origin', '*')
-                ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-                ->header('Access-Control-Allow-Headers', 'Content-Type');
+        return response(['id' => $registro->id], 200)
+            ->header('Content-Type', 'application/json')
+            ->header('Access-Control-Allow-Origin', '*')
+            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+            ->header('Access-Control-Allow-Headers', 'Content-Type');
 
 
 
         } catch ( QueryException $e ){
             return response(["message" => $e->getMessage()], 400)
-            ->header('Content-Type', 'application/json')
-                            ->header('Access-Control-Allow-Origin', '*')
+                ->header('Content-Type', 'application/json')
+                ->header('Access-Control-Allow-Origin', '*')
                 ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
                 ->header('Access-Control-Allow-Headers', 'Content-Type');
-        } catch ( \ReflectionException $e ){
+
             return response("La clase solicitada no existe", 400)
                 ->header('Content-Type', 'application/json')
-                                ->header('Access-Control-Allow-Origin', '*')
+                ->header('Access-Control-Allow-Origin', '*')
+                ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+                ->header('Access-Control-Allow-Headers', 'Content-Type');
+        }catch (Exception $e){
+            return response($e, 400)
+                ->header('Content-Type', 'application/json')
+                ->header('Access-Control-Allow-Origin', '*')
                 ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
                 ->header('Access-Control-Allow-Headers', 'Content-Type');
         }

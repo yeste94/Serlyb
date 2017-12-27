@@ -5,26 +5,42 @@ namespace App\Http\Controllers\endPoints\v1;
 use App\Viviendas;
 use App\Archivos;
 
+use Illuminate\Http\Request;
+use Doctrine\DBAL\Types\Type;
+
 /**
 * 
 */
 class ViviendasController extends BaseController
 {
 
-    const RUTE = "App\\";
 
+	//funcion para devolver Vivienda no terminadas
+	public function getViviendaNoFin(Request $request){
+		try{
+			$vivienda = Viviendas::where('fin',0)->get();
+
+			if (count($vivienda) <= 0)
+                $vivienda = ['Empty'];
+
+			return response($vivienda, 200)	
+			    ->header('Content-Type', 'application/json')
+                ->header('Access-Control-Allow-Origin', '*')
+                ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+                ->header('Access-Control-Allow-Headers', 'Content-Type');							
+
+		}catch(QueryException $e){
+		return response(["message" => $e->getMessage()],400)
+			->header('Content-Type', 'application/json');
+		}	
+		
+	}
 
 
     //Funcion para descargar el archivo PDF
-	public function ArchivoPDF(Request $request){
+	public function ArchivoPDF(Request $request, $id){
 		//Si no han puesto el id en la petición manda un erro 400
-		if($request->has('id') ){
-
 			try{
-
-				//Obtenemos el id de la petición
-				$id = $request->input('id');
-
 				//Obtenemos de la base de datos el archivo pdf en base64
 	     		$query = Archivos::where('id_vivienda', $id)
 	     						->where('tipo_archivo',0)
@@ -37,26 +53,21 @@ class ViviendasController extends BaseController
 
      			$headers = array(
 	              	'Content-Type: application/pdf',
-            	);
+	              	'Access-Control-Allow-Origin: *',
+	              	'Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS',
+	              	'Access-Control-Allow-Headers: Content-Type',
+            	);                
      			//Devolvemos el archivo para descargarlo.
             	return response()->download('archivo.pdf', 'archivo.pdf', $headers );
 
 			}catch(QueryException  $e){
 				return response(["message" => $e->getMessage()],400)
-					-header('Content-Type', 'application/json');
+					->header('Content-Type', 'application/json');
 			} catch ( \ReflectionException $e ){
             	return response("La clase solicitada no existe", 400)
                 	->header('Content-Type', 'application/json');
         	}
-
-		}else{
-			  return response(null, 400)
-                ->header('Content-Type', 'application/json');
-		}
-
-		
 	}
-
 
 	//Funcion para descargar las imagenes
 	public function ArchivosImagenes(Request $request){
@@ -107,7 +118,7 @@ class ViviendasController extends BaseController
 
 			}catch(QueryException  $e){
 				return response(["message" => $e->getMessage()],400)
-					-header('Content-Type', 'application/json');
+					->header('Content-Type', 'application/json');
 			} catch ( \ReflectionException $e ){
 	            return response("La clase solicitada no existe", 400)
 	                ->header('Content-Type', 'application/json');
@@ -115,9 +126,12 @@ class ViviendasController extends BaseController
 
 		}else{
 			return response(null, 400)
-					-header('Content-Type', 'application/json');
+					->header('Content-Type', 'application/json');
 		}
 	}
+
+
+
 
 
 }
