@@ -73,5 +73,21 @@ $router->group(['prefix' => 'api' /*, 'middleware' => 'Cors' */], function ($rou
 
             $router->post('login','UsuarioController@login');
         });
+
+        //-----TRABAJADOR USUARIO DIA -------------
+        $router->group(['prefix'=> 'trabviviendadia'], function($router){
+            $router->get('/','TrabVivendaDiaController@all');
+            $router->get('date','TrabVivendaDiaController@getDateVivendaDia');
+            $router->get('idTrabajador','TrabVivendaDiaController@getTrabajadores');
+            
+            $router->post('create','TrabVivendaDiaController@create');
+            $router->delete('{id}','TrabVivendaDiaController@delete');
+            $router->put('{id}','TrabVivendaDiaController@update');
+            $router->get('{id}','TrabVivendaDiaController@find');
+            $router->post('findfilter','TrabVivendaDiaController@findByFilter');
+
+
+        });
+
     });
 });
