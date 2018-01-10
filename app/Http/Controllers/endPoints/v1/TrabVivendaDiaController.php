@@ -16,9 +16,9 @@ class TrabVivendaDiaController extends BaseController
 	
 	//Funcion que devuelve la fecha insertadas de la vivienda
 	public function getDateVivendaDia(Request $request){
-		try{
+		try{			
 
-			$clase = TrabViviendaDia::where('id_vivienda',1)
+			$clase = TrabViviendaDia::where('id_vivienda', $request->input('id_vivienda'))
 				->distinct()
 				->get(['id_vivienda','DATE']);
 		
@@ -42,8 +42,8 @@ class TrabVivendaDiaController extends BaseController
 			$arrTraba = [];
 
 			//Obtenemos los id de los trabajadores que han estado ese dia en la vivienda
-			$idTrabajadores = TrabViviendaDia::where('id_vivienda', 1)
-							->Where('DATE', '2017-12-28')
+			$idTrabajadores = TrabViviendaDia::where('id_vivienda', $request->input('id_vivienda') )
+							->Where('DATE', $request->input('date') )
 							->get(['id_trabajador']);
 				
 			//Con este bucle obtenemos los trabajadores y los metemos un array.
@@ -52,7 +52,6 @@ class TrabVivendaDiaController extends BaseController
 										->get() );
 
 			}
-
 
 			return response($arrTraba,200)
 				->header('Content-Type', 'application/json');

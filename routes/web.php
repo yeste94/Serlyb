@@ -86,7 +86,6 @@ $router->group(['prefix' => 'api' /*, 'middleware' => 'Cors' */], function ($rou
             $router->get('{id}','TrabVivendaDiaController@find');
             $router->post('findfilter','TrabVivendaDiaController@findByFilter');
 
-
         });
 
     });
