@@ -20,6 +20,7 @@ class TrabViviendaDia extends Migration
                 $table->bigInteger('id_vivienda')->unsigned();
                 $table->integer('id_trabajador')->unsigned();
                 $table->date('date');
+                $table->timestamps();
             });
         }
     }

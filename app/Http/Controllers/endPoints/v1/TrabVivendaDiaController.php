@@ -65,10 +65,29 @@ class TrabVivendaDiaController extends BaseController
         }
 
 
+	}	
+
+	//funcion que crear nuevo registro con el trabajador en la vivienda en tal fecha
+	public function crearTrabajadorVivienda(Request $request){
+
+		$vivienda = $request->input('vivienda');
+		$trabajadores = explode(",", $request->input('trabajadores') );
+		$date = $request->input('date');
+
+
+		//print_r( $clase['id_vivienda']);
+		for($i=0; $i<count($trabajadores); $i++ ){
+			$clase = new TrabViviendaDia();
+			$clase['id_vivienda'] = $vivienda;
+			$clase['id_trabajador'] = $trabajadores[$i];
+			$clase['date'] = $date;
+
+			$clase->save(); 			
+		}
+
+		return 
+
 	}
-
-
-
 }
 
 

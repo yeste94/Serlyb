@@ -1,20 +1,22 @@
 <?php
 
+
 namespace App\Http\Controllers\endPoints\v1;
+
 
 use App\Archivos;
 
 use Illuminate\Http\Request;
-use Doctrine\DBAL\Types\Type;
+
+
+
 /**
 * 
 */
 class ArchivosController extends BaseController
 {
-	
 
 	public function crearArchivo(Request $request){
-
 		try {
 
  			

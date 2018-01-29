@@ -31,6 +31,9 @@ $router->group(['prefix' => 'api' /*, 'middleware' => 'Cors' */], function ($rou
 		$router->group(['prefix' => 'archivos'], function($router){
     		$router->get('/','ArchivosController@all');
     		$router->post('create','ArchivosController@crearArchivo');
+            $router->post('createDrive','ArchivosController@insertDrive');
+
+
     		$router->delete('{id}','ArchivosController@delete');
     		$router->put('{id}','ArchivosController@update');
             $router->get('{id}','ArchivosController@find');
@@ -81,6 +84,8 @@ $router->group(['prefix' => 'api' /*, 'middleware' => 'Cors' */], function ($rou
             $router->get('idTrabajador','TrabVivendaDiaController@getTrabajadores');
             
             $router->post('create','TrabVivendaDiaController@create');
+            $router->post('createtrabajadorvivienda', 'TrabVivendaDiaController@crearTrabajadorVivienda');            
+
             $router->delete('{id}','TrabVivendaDiaController@delete');
             $router->put('{id}','TrabVivendaDiaController@update');
             $router->get('{id}','TrabVivendaDiaController@find');
