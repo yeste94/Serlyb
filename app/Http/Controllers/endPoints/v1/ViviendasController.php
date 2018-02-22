@@ -7,6 +7,7 @@ use App\Archivos;
 
 use Illuminate\Http\Request;
 use Doctrine\DBAL\Types\Type;
+use ZipArchive;
 
 /**
 * 
@@ -48,8 +49,9 @@ class ViviendasController extends BaseController
 
 	     		$base64 =  $query->base64;
 	     		//decodificamos el archivo par obtener el pdf y lo guardamos en el servidor
-	     		$base64 = base64_decode($base64);
-	     		file_put_contents('archivo.pdf',$base64);
+	     		//$base64 = base64_decode($base64);
+	     		//file_put_contents('archivo.pdf',$base64);
+
 
      			$headers = array(
 	              	'Content-Type: application/pdf',
@@ -58,7 +60,7 @@ class ViviendasController extends BaseController
 	              	'Access-Control-Allow-Headers: Content-Type',
             	);                
      			//Devolvemos el archivo para descargarlo.
-            	return response()->download('archivo.pdf', 'archivo.pdf', $headers );
+            	return response()->download($base64, $base64, $headers );
 
 			}catch(QueryException  $e){
 				return response(["message" => $e->getMessage()],400)
@@ -96,25 +98,45 @@ class ViviendasController extends BaseController
 
 	   			//Creamos la clase zip y comprimimos las fotos
 				$zip = new ZipArchive;
-				$filename = 'fotos.zip';	
+				$filename = 'fotosVivienda.zip';	
 
 
-				if($zip->open($filename, ZIPARCHIVE::OVERWRITE ) === true){
 
-					for( $i=0; $i<sizeof($arrImagenes); $i++ ){					
 
-						$img = base64_decode($arrImagenes[$i]->base64);
-						file_put_contents('archivo'.$i.'.jpg', $img);
 
-						$zip->addFile('archivo'.$i.'.jpg');
+				if($zip->open($filename, ZIPARCHIVE::ER_EXISTS  ) === true){
+
+					if($zip->open($filename, ZIPARCHIVE::OVERWRITE  ) === true){
+
+						for( $i=0; $i<sizeof($arrImagenes); $i++ ){					
+							$img = $arrImagenes[$i]->base64;
+							
+							$zip->addFile($img);
+						}
+						$zip->close(); 
 					}
-					$zip->close();
+					echo 'existe';
+				}else{
+					echo 'no existe'; 
+					if($zip->open($filename, ZIPARCHIVE::CREATE  ) === true){
+
+						for( $i=0; $i<sizeof($arrImagenes); $i++ ){					
+							$img = $arrImagenes[$i]->base64;
+							
+							$zip->addFile($img);
+						}
+						$zip->close();
+
+					}
+
 				}
+
+				
 	     		$headers = array(
 	              'Content-Type: application/zip',
 	            );
 
-				return response()->download('fotos.zip', 'fotos.zip', $headers);
+				//return response()->download('fotosVivienda.zip', 'fotosVivienda.zip', $headers);
 
 			}catch(QueryException  $e){
 				return response(["message" => $e->getMessage()],400)

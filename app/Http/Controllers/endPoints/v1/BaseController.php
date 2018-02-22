@@ -16,6 +16,7 @@ class BaseController
     const RUTE = "App\\";
 
     public function getClass($path){
+        echo $path;
         $clase = substr($path, strpos($path, '/', 4)+1);
         if( strpos($clase, '/') != 0 )
             $clase = substr($clase, 0,strpos($clase, '/'));
@@ -28,6 +29,7 @@ class BaseController
 
             //Devuelve la clase segun el prefijo
             $clase = $this->getClass($request->path());
+
             $clase = self::RUTE.$clase;
 
             $arrRegistros = $clase::all();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\endPoints\v1;
 use App\Usuario;
 use Illuminate\Http\Request;
 use Doctrine\DBAL\Types\Type;
+
 class UsuarioController extends BaseController
 {
 	const RUTE = "App\\";

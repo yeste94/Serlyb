@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\endPoints\v1;
 
-use App\TrabViviendaDia;
+use App\Trabviviendadia;
 use App\Trabajador;
 
 use Illuminate\Http\Request;
@@ -85,7 +85,7 @@ class TrabVivendaDiaController extends BaseController
 			$clase->save(); 			
 		}
 
-		return 
+		
 
 	}
 }
